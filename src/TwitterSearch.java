@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -7,6 +10,7 @@ import twitter4j.*;
 import java.util.ArrayList;
 import java.util.List;
 import twitter4j.auth.AccessToken;
+
 
 
 public class TwitterSearch {
@@ -67,8 +71,25 @@ public class TwitterSearch {
 			QueryResult result = queryResults.get(i);
 			List<Status> tweets = result.getTweets();
 			for (Status tweet : tweets) {
-				System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+				String text = tweet.getText();
+				text = text.replace("\n", "").replace("\r", "");
+				System.out.println(text + "\n");
+				//System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
 			}
 		}
+	}
+	
+	public void writeFileQueryTweets(BufferedWriter writer, ArrayList<QueryResult> queryResults) throws IOException {
+		for(int i=0; i<queryResults.size(); i++) {
+			QueryResult result = queryResults.get(i);
+			List<Status> tweets = result.getTweets();
+			for (Status tweet : tweets) {
+				String text = tweet.getText();
+				text = text.replace("\n", "").replace("\r", "");
+				writer.write(text + "\n");
+				//writer.write("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+			}
+		}
+		writer.flush();
 	}
 }

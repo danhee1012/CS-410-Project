@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,11 +16,14 @@ public class twitterTest {
 
 	/**
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		TwitterSearch TS = new TwitterSearch();
 		ArrayList<String> queryList = null;
 		
+		File file = new File("tweets.txt");
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 		//ArrayList<QueryResult> queryResults = TS.query(args[0]);
 		//TS.printQueryTweets(queryResults);
 		
@@ -29,7 +35,9 @@ public class twitterTest {
 		for(int i=0; i<queryList.size(); i++) {
 			ArrayList<QueryResult> queryResults = TS.query(queryList.get(i));
 			TS.printQueryTweets(queryResults);
+			TS.writeFileQueryTweets(writer, queryResults);
 		}
+		writer.close();
 	}
 	
 	public static ArrayList<String> QueryList() throws IOException {
